@@ -1,6 +1,50 @@
 # ConfigurationParser
 
-TODO: Write a gem description
+This library parses configuration that looks like this:
+
+```ruby
+set :name, "Gabe"
+set :posts_per_page, 3
+configure :blog do
+  set :root, "/blog"
+end
+```
+
+...which is parsed into this hash:
+
+```ruby
+{
+  name: "Gabe",
+  posts_per_page: 3,
+  blog: {
+    root: "/blog"
+  }
+}
+```
+
+You can nest configuration arbitrarily deep, for example:
+
+```ruby
+configure :blog do
+  configure :second_level do
+    configure :inception do
+      set :christopher, "Nolan"
+    end
+  end
+end
+
+# becomes
+
+{
+  blog: {
+    second_level: {
+      inception: {
+        christopher: "Nolan"
+      }
+    }
+  }
+}
+```
 
 ## Installation
 
@@ -18,7 +62,18 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+The `ConfigurationParser.parse` method is the only method you need. It takes a
+string:
+
+```ruby
+ConfigurationParser.parse("set :posts_per_page, 3")
+```
+
+You can parse files:
+
+```ruby
+ConfigurationParser.parse(File.read('my_config_file'))
+```
 
 ## Contributing
 
