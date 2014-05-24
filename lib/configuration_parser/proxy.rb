@@ -13,7 +13,7 @@ module ConfigurationParser
     end
 
     def configure(nest, &block)
-      nester = Proxy.new
+      nester = self.class.new
       nester.instance_eval(&block)
       @hash[nest] = nester.hash
     end
